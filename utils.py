@@ -1,10 +1,6 @@
 import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-os.environ["TESSERACT_PATH"] = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-import pytesseract
-
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 from langchain_community.document_loaders import (
     Docx2txtLoader,
     PyMuPDFLoader,
