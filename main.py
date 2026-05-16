@@ -5,6 +5,7 @@ import shutil
 import lancedb
 import pandas as pd
 from utils import process_and_embed, save_to_lancedb, answer_query
+from dl_embedding import chunk_and_embed
 
 from dotenv import load_dotenv
 
@@ -23,11 +24,14 @@ db = lancedb.connect(
 )
 
 
-TABLE_NAME = "documents2"
+TABLE_NAME = "documents3"
 
 
 class Question(BaseModel):
     question: str
+
+
+check = True
 
 
 @app.post("/upload")
@@ -37,7 +41,7 @@ async def upload_file(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    embedded_chunks = process_and_embed(file_path)
+    embedded_chunks = process_and_embed(file_path) if (check) else chunk_and_embed
 
     save_to_lancedb(embedded_chunks, db=db)
 
