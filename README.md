@@ -1,81 +1,134 @@
-# 📄 RAG-Enhanced Document & Image QA System
+# Hallucination Detection in RAG-Based Actuarial Agents
 
-This project is a **Retrieval-Augmented Generation (RAG)** based intelligent system that allows users to upload a document or image file and ask natural language questions about its content. It leverages embedding-based semantic search using **LanceDB** and provides accurate, context-aware answers using **LLMs**.
+## Overview
 
----
+This project is a Retrieval-Augmented Generation (RAG)-based actuarial assistant designed for intelligent insurance policy analysis with integrated hallucination detection and verification. The system processes insurance-related documents, extracts and stores semantic embeddings, retrieves contextually relevant policy clauses, and generates grounded responses using Large Language Models (LLMs).
 
-## 🚀 Features
+To improve factual reliability, the architecture incorporates a dual-stage hallucination detection and cross-model verification framework. Generated responses are audited for fabrication, contradiction, incorrect inference, missing inference, and partial grounding before being independently verified using a separate LLM. The system is built using FastAPI, LangChain, LanceDB, Mistral AI, and Groq-hosted Llama 3.1 models, providing a scalable and reliable pipeline for AI-driven actuarial and insurance document analysis.
 
-- 📤 Upload support for **text documents** and **image files**
-- 🧾 **OCR** (Optical Character Recognition) to extract text from images
-- ✂️ **Text chunking** and **embedding generation**
-- 💾 Vector storage with **LanceDB**
-- 🔍 **Semantic search** for context retrieval
-- 🤖 Final answer generation using **RAG (Retrieval-Augmented Generation)** with an LLM
+Built using:
 
----
-
-## 🛠️ How It Works
-
-1. **User Uploads** a document (PDF, TXT) or an image (JPG, PNG).
-2. If an image is uploaded, **OCR** is applied to extract text using tools like Tesseract or easyOCR.
-3. The extracted text is **chunked** and **converted to embeddings** using an embedding model (e.g., Mistral or any sentence-transformer).
-4. These embeddings are **stored in LanceDB** as vectors.
-5. When the user asks a **question**, it is embedded and **matched against the stored vectors**.
-6. The most similar chunks are retrieved and passed to the **LLM**, which **generates an answer** using the retrieved context.
+- FastAPI
+- LangChain
+- LanceDB
+- Mistral AI
+- Groq Llama 3.1
 
 ---
 
-## 📦 Tech Stack
+# Features
 
-- **Python**
-- **LanceDB** – for storing and retrieving document embeddings
-- **Tesseract / easyOCR** – for OCR on image files
-- **Sentence Transformers / Mistral / HuggingFace** – for embedding generation
-- **LangChain / Custom RAG Logic** – for Retrieval-Augmented Generation
-- **FastAPI** – for backend API
-
----
-
-## 🖼️ Example Workflow
-
-1. **Upload**: `invoice.png`  
-2. **OCR Text**: _"Total amount: ₹2,450. Due by: 15th Aug"_  
-3. **Chunking + Embedding → LanceDB**
-4. **User Query**: _"What is the due date on this invoice?"_
-5. **RAG Output**: _"The due date on this invoice is 15th Aug."_
+- Multi-format document ingestion (PDF, DOCX, PPTX, Images)
+- Semantic chunking and embeddings
+- LanceDB vector storage
+- Context-aware RAG pipeline
+- Hallucination detection
+- Cross-model verification
+- FastAPI backend APIs
 
 ---
 
-## ⚙️ Setup Instructions
+# Workflow
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-username/RAG-DocQA.git
-cd RAG-DocQA
+```text
+Document Upload
+    ↓
+Text Extraction
+    ↓
+Chunking & Embeddings
+    ↓
+LanceDB Storage
+    ↓
+Semantic Retrieval
+    ↓
+LLM Response Generation
+    ↓
+Hallucination Detection
+    ↓
+Cross-Model Verification
+    ↓
+Final Verified Response
 ```
 
+---
 
-### 2. Create and activate virtual environment
+# Installation
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-
-### 3. Install dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
+## Create `.env`
 
-### 4. Run the backend (FastAPI or your chosen framework)
-
-```bash
-uvicorn app.main:app --reload
+```env
+MISTRAL_API_KEY=your_key
+GROQ_API_KEY=your_key
+LANCEDB_API_KEY=your_key
+HF_TOKEN=your_key
 ```
 
+---
 
+# Run Server
+
+```bash
+uvicorn main:app --reload
+```
+
+---
+
+# API Endpoints
+
+## Upload Document
+
+```http
+POST /upload
+```
+
+## Query System
+
+```http
+POST /query-by-user
+```
+
+Example Request:
+
+```json
+{
+  "question": "What is the waiting period for pre-existing conditions?"
+}
+```
+
+---
+
+# Tech Stack
+
+- Python
+- FastAPI
+- LangChain
+- LanceDB
+- Mistral AI
+- Groq API
+- Llama 3.1
+
+---
+
+# Project Structure
+
+```text
+project/
+│
+├── main.py
+├── utils.py
+├── uploads/
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# Conclusion
+
+The project introduces a hallucination-aware RAG architecture for insurance policy analysis by combining semantic retrieval, constrained generation, hallucination auditing, and independent verification to improve reliability in AI-generated responses.
